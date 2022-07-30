@@ -6,11 +6,13 @@
 
 To update use `git pull`
 
-# Create .env file
+# Update .env file
 
-Create a file named `.env` 
-
-Add the following:
+Rename .env.example to .env and edit the following variables:
+```
+cp .env.example .env
+nano .env
+```
 
 > Generate a token in the API section of your provider.
 
@@ -21,35 +23,42 @@ Add the following:
 > If using Linnode, make sure to setup Email
 > https://www.linode.com/community/questions/19082/i-just-created-my-first-linode-and-i-cant-send-emails-why
 
-> Add Vstats Token.  On Telegram -> @vStatsBot - use command `/volumetoken` to generate a token.
+> Add Vstats Token.  On Telegram -> @vStatsBot - use command `/token` to generate a token.
 
 > Toggle the `SEND_EMAIL` & `SEND_ALERT_TO_VSTATS` choose `True` / `False` to send alerts to these 2.
 
 ```
-# Choose DO (Digital Ocean) / LN (Linnode)
+# Choose DO (Digital Ocean) / LN (Linnode) / XX (Any other with no auto Resize - Alerts only - provide name in PROVIDER_NAME)
 PROVIDER=DO
-VOLUME_NAME=volume-fra1-01
+VOLUME_NAME=volume_sfo3_02
+PROVIDER_NAME=False # Provide name if PROVIDER=XX  (E.G. Hetzner)
 
-# API Key
-TOKEN=<PROVIDER API TOKEN>
+# API Key DO
+TOKEN=<DIGITAL_OCEAN_API_KEY>
 
-# Percentage to trigger and Amount
-INCREASE_BY_PERCENTAGE=2 
+# # API KEY LN
+# TOKEN=<LINNODE_API_KEY>
+
+# Trigger options
+INCREASE_BY_PERCENTAGE=5 
 BELOW_THIS_PERCENT_TO_RESIZE=5
 
 # Hours in-between checks
 HOURS=6
 
 # Email Options
-SEND_EMAIL=False
+SEND_EMAIL=True
 EMAIL_SMTP=smtp.123-reg.co.uk
-EMAIL_PASS=<EMaiL PASSWORD>
+EMAIL_PASS=<EMAIL_PASSWORD>
 EMAIL_FROM=john@maffaz.com
 EMAIL_TO=mennovandevlees@gmail.com
 
 # Vstats Telegram Bot Options
 SEND_ALERT_TO_VSTATS=True
-VSTATS_TOKEN=<VSTATS BOT>
+VSTATS_TOKEN=<VSTATS_TOKEN>
+
+#Monitoring alerts - Space Left
+SPACE_LEFT_ALERT=True
 
 ```
 
@@ -67,8 +76,8 @@ VSTATS_TOKEN=<VSTATS BOT>
 
 
 # create systemd
-
-> if you are unsure of the location of `/path/to/digital_ocean_volume_resize`
+> NOTE: You will need root access. If you do not have this or would prefer not to then you can create a tmux session under your user and skip the below.
+> If you are unsure of the location of `/path/to/digital_ocean_volume_resize`
 > navigate to the dir and run the command `pwd` (Path Current Directoy)
 > This will give you the location , i.e. `/maffaz/harmony/digital_ocean_volume_resize`
 
